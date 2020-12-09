@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+IA* AI;
 
 Coordonee** normalShoot(Coordonee* centralPos,Plateau* ennemyPlat){    
     Coordonee** res = malloc(2*sizeof(Coordonee*));
@@ -101,10 +101,10 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     if(!plat->canSpecialShoot)
         return f(centralPos,ennemyPlat);
     
-    printf("Quel tir voulez vous effucter\n");
+    printf("Quel tir voulez-vous effectuer ?\n");
     printf("1)Tir basique\n");
     if(isAliveBoat(plat->boatAlive[1],plat))printf("2)Tir en ligne (sous-marin)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[1]->type);
-    if(isAliveBoat(plat->boatAlive[1],plat))printf("3)Tir en collogne (sous-marin)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[1]->type);
+    if(isAliveBoat(plat->boatAlive[1],plat))printf("3)Tir en colonne (sous-marin)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[1]->type);
     if(isAliveBoat(plat->boatAlive[3],plat))printf("4)Tir en croix (croiseur)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[3]->type);
     if(isAliveBoat(plat->boatAlive[3],plat))printf("5)Tir en plus (croiseur)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[3]->type);
     if(isAliveBoat(plat->boatAlive[4],plat))printf("6)Tir en carré (porte avion) \n"); else printf("Votre %s est mort.\n",plat->boatAlive[4]->type);
@@ -153,7 +153,7 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
         f=shootSquare;
     }
     else{
-        printf("Erreur,saisie invalide\n");
+        printf("Erreur, saisie invalide\n");
         return getType(centralPos,plat,ennemyPlat);
     }
     return f(centralPos,ennemyPlat);
@@ -177,7 +177,7 @@ int shoot(Coordonee** allPos,Plateau* plat,Plateau* ennemyPlat){
     if(i==1 && haveHit)
         plat->canSpecialShoot=1;
     else plat->canSpecialShoot=0;
-    return 1;
+    return haveHit;
 }
 
 int didHeLoose(Plateau* ennemyPlat){
@@ -189,11 +189,11 @@ int didHeLoose(Plateau* ennemyPlat){
 }
 void shootAsUser(Plateau* plat,Plateau* ennemyPlat){
     //RECUPER LA POSITION CENTRALE
-    printf("Attaque de : %s -> %s\nOu voulez vous attquer ?\n>",plat->owner,ennemyPlat->owner);
+    printf("Attaque de : %s -> %s\nOu voulez-vous attaquer ?\n>",plat->owner,ennemyPlat->owner);
     Coordonee* attackPos =NULL;
     do{
         if(attackPos!=NULL)
-            printf("Coordonée incorect\n");
+            printf("Coordonnée incorrecte\n");
         attackPos = askForCoordonnePrompt();
     }
     while(!isCorrectPos(attackPos->c,attackPos->l,ennemyPlat));
@@ -205,5 +205,36 @@ void shootAsUser(Plateau* plat,Plateau* ennemyPlat){
         printPlat(ennemyPlat,0);
         printf("%s a gagné ! \n",plat->owner);
         exit(1);
+    }
+}
+
+void initIA() {
+    AI = malloc(sizeof(IA));
+    AI->state = 0;
+    AI->odd = 0;
+    AI->dir = 'r';
+    AI->xBis = 0;
+    AI->yBis = 0;
+    AI->x = 'a';
+    AI->y = 1;
+}
+
+void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
+    Coordonee* attackPos = initCoordonee(AI->x,AI->y);
+    int hit = shoot(normalShoot(attackPos, ennemyPlat), plat, ennemyPlat);
+    //if(hit && !state) AI->state = 1;
+    if(AI->state == 0) {
+        AI->x += 2;
+        if(AI->x >= 'a' + plat->nb_colonne) {
+            if(AI->odd == 1) {
+                AI->x = 'a';
+                AI->odd = 0;
+            }
+            else {
+                AI->x = 'b';
+                AI->odd = 1;
+            }
+            AI->y++;
+        }
     }
 }

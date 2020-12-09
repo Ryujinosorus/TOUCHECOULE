@@ -7,7 +7,7 @@
 
 char getCharAt(char c,int l,Plateau* plat){
     if(l<=0 || l>plat->nb_ligne || c-'a'>=plat->nb_colonne){
-        fprintf(stderr,"Accees a la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
+        fprintf(stderr,"Accès à la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
         exit(EXIT_FAILURE);
     }
     return plat->tab[l-1][c-'a'];
@@ -19,7 +19,7 @@ int isCorrectPos(char c,int l,Plateau* plat){
 
 void setCharAt(char c,int l,Plateau* plat,char val){
    if(l>plat->nb_ligne || c-'a'>=plat->nb_colonne){
-        fprintf(stderr,"Accees a la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
+        fprintf(stderr,"Accès a la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
         exit(EXIT_FAILURE);
     }
     plat->tab[l-1][c-'a']=val;
@@ -80,7 +80,7 @@ int checkIfItsCorrectBoatPlace(Coordonee* pos, char dir,Plateau* plat,int size){
     }
     else if(dir=='g'){
         for(int j=0;j<size;j++)
-            if(!isCorrectPos(pos->c-j,pos->l,plat) || getCharAt(pos->c-j,pos->l,plat)=='0')
+            if(!isCorrectPos(pos->c-j,pos->l,plat) || getCharAt(pos->c-j,pos->l,plat)=='O')
                 return 0;   
     }
     else if(dir=='d'){
@@ -118,7 +118,7 @@ void addBoatToPlat(Plateau* plat){
         do{
             system("clear");
             printPlat(plat,0);
-            printf("Ou voulez vous placer votre bateau de taille %d (%s)\n>",curentBoat->size,curentBoat->type);
+            printf("Ou voulez-vous placer votre bateau de taille %d (%s)\n>",curentBoat->size,curentBoat->type);
             pos = askForCoordonnePrompt();
             printf("Dans quelle direction ?\nh ou b ou g ou d >");
             scanf("%c",&dir);
@@ -163,6 +163,7 @@ void addBoatToPlat(Plateau* plat){
 
 Plateau* generateBoat(Plateau* plat){
     Boat** tab=boatTab();
+    plat->boatAlive=tab;
     for(int i=0;i<5;i++){
         Boat* curentBoat = tab[i];
         Coordonee* pos;

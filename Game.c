@@ -16,7 +16,7 @@ Game* initGame(){
     printf("Combien de lignes voulez vous ?\n>");
     scanf("%d",&nbL);
     clear
-    printf("Combien de collones voulez vous ?\n>");
+    printf("Combien de colonnes voulez vous ?\n>");
     scanf("%d",&nbC);
     clear
 
@@ -32,19 +32,24 @@ Game* initGame(){
 
     Game* res= malloc(sizeof(Game));
     res->allPlat=malloc(sizeof(Plateau*)*2);
-    res->allPlat[0]=initTab(nbC, nbL,nom);
+    //res->allPlat[0]=initTab(nbC, nbL,nom);
+    res->allPlat[0]=initTab(nbC,nbL, nom);
+    generateBoat(res->allPlat[0]);
     //addBoatToPlat(res->allPlat[0]);
     res->whereToAttack1=shootAsUser;
     
     if(a==1){
         system("clear");
-        res->allPlat[1]=generateBoat(initTab(nbC,nbL,"IA"));
+        initIA();
+        nom2 = "IA";
+        res->allPlat[1]=initTab(nbC,nbL, nom2);
+        generateBoat(res->allPlat[1]);
         printPlat(res->allPlat[1],0);
-        exit(1);
+        res->whereToAttack2=shootAsIA;
     }
     else if(a==2){
         system("clear");
-        printf("Quel est votre nom ? (Joueau2) \n>");
+        printf("Quel est votre nom ? (Joueur 2) \n>");
         scanf("%s",nom2);
         getchar();
         res->allPlat[1]=initTab(nbC,nbL,nom2);
@@ -69,7 +74,7 @@ void run(Game* game){
             printPlat(game->allPlat[0],1);
             game->whereToAttack2(game->allPlat[1],game->allPlat[0]);
             printPlat(game->allPlat[0],1);
-            printf("Resultat de l'attaque");
+            printf("Resultat de l'attaque\n");
             printf("Appuyez sur entree pour continuer: ");
             while(getchar() != '\n');
         }
