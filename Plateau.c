@@ -13,6 +13,12 @@ char getCharAt(char c,int l,Plateau* plat){
     return plat->tab[l-1][c-'a'];
 }
 
+int alreadyHitten(char c, int l, Plateau* plat){
+    char tmp = getCharAt(c, l, plat);
+    if(tmp == '#' || tmp == 'X') return 1;
+    return 0;
+}
+
 int isCorrectPos(char c,int l,Plateau* plat){
     return !(l<=0 || l>plat->nb_ligne || c-'a'>=plat->nb_colonne || c-'a'<0);
 }
@@ -48,7 +54,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 }
 
 void printPlat(Plateau* plat,int mask){
-    system("clear");
+    //system("clear");
     printf("Plateau de %s : \n\n    ",plat->owner);
     for(int l=0;l<plat->nb_colonne;l++)
         printf("%c ",l+'a');

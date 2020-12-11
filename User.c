@@ -211,6 +211,7 @@ void shootAsUser(Plateau* plat,Plateau* ennemyPlat){
 void initIA() {
     AI = malloc(sizeof(IA));
     AI->state = 0;
+    AI->check = 0;
     AI->odd = 0;
     AI->dir = 'r';
     AI->xBis = 0;
@@ -220,21 +221,137 @@ void initIA() {
 }
 
 void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
-    Coordonee* attackPos = initCoordonee(AI->x,AI->y);
-    int hit = shoot(normalShoot(attackPos, ennemyPlat), plat, ennemyPlat);
-    //if(hit && !state) AI->state = 1;
-    if(AI->state == 0) {
-        AI->x += 2;
-        if(AI->x >= 'a' + plat->nb_colonne) {
-            if(AI->odd == 1) {
-                AI->x = 'a';
-                AI->odd = 0;
+    int justChanged = 0;
+    if(!AI) {
+        printf("L'IA n'a pas été correctement initialisé avec initIA().");
+        exit(1);
+    }
+    if(AI->state == 0){
+        while(alreadyHitten(AI->x, AI->y, ennemyPlat)) {
+            AI->x += 2;
+            if(AI->x >= 'a' + plat->nb_colonne) {
+                if(AI->odd == 1) {
+                    AI->x = 'a';
+                    AI->odd = 0;
+                }
+                else {
+                    AI->x = 'b';
+                    AI->odd = 1;
+                }
+                AI->y++;
             }
-            else {
-                AI->x = 'b';
-                AI->odd = 1;
-            }
-            AI->y++;
         }
+    }
+    Coordonee* attackPos = initCoordonee(AI->x + AI->xBis,AI->y + AI->yBis);
+    printf("IA Shoot -> %c%d %c+%d %d+%d", AI->x + AI->xBis, AI->y + AI->yBis, AI->x, AI->xBis, AI->y, AI->yBis);
+    int hit = shoot(normalShoot(attackPos, ennemyPlat), plat, ennemyPlat);
+    printf("Etat AI: %d\n", AI->state);
+    if(hit && AI->state == 0) {AI->state = 1; justChanged = 1;}
+    if(AI->state == 1) {
+        if(!justChanged && hit) {
+            // Si l'IA a trouvé le sens du bateau, elle passe à l'état 2.
+            AI->state = 2;
+        }
+        else if(!justChanged && !hit) {
+            // Si l'IA n'a pas trouvé le sens du bateau, elle continue en testant le prochain sens valide.
+            if(AI->dir == 'r') {
+                if(isCorrectPos(AI->x, AI->y+1, plat)) {AI->dir = 'b';}
+                else if(isCorrectPos(AI->x-1, AI->y, plat)) {AI->dir = 'l';}
+                else if(isCorrectPos(AI->x, AI->y-1, plat)) {AI->dir = 't';}
+            }
+            else if(AI->dir == 'b') {
+                if(isCorrectPos(AI->x-1, AI->y, plat)) {AI->dir = 'l';}
+                else if(isCorrectPos(AI->x, AI->y-1, plat)) {AI->dir = 't';}
+                else if(isCorrectPos(AI->x+1, AI->y, plat)) {AI->dir = 'r';}
+            }
+            else if(AI->dir == 'l') {
+                if(isCorrectPos(AI->x, AI->y-1, plat)) {AI->dir = 't';}
+                else if(isCorrectPos(AI->x+1, AI->y, plat)) {AI->dir = 'r';}
+                else if(isCorrectPos(AI->x, AI->y+1, plat)) {AI->dir = 'b';}
+            }
+            else if(AI->dir == 't') {
+                if(isCorrectPos(AI->x+1, AI->y, plat)) {AI->dir = 'r';}
+                else if(isCorrectPos(AI->x, AI->y+1, plat)) {AI->dir = 'b';}
+                else if(isCorrectPos(AI->x-1, AI->y, plat)) {AI->dir = 'l';}
+            }
+            AI->xBis = 0;
+            AI->yBis = 0;
+        }
+        else if(justChanged) {
+            printf("Dans justChanged\n");
+            if(isCorrectPos(AI->x+1, AI->y, plat)) {AI->dir = 'r';}
+            else if(isCorrectPos(AI->x, AI->y+1, plat)) {AI->dir = 'b';}
+            else if(isCorrectPos(AI->x-1, AI->y, plat)) {AI->dir = 'l';}
+            else if(isCorrectPos(AI->x, AI->y-1, plat)) {AI->dir = 't';}
+        }
+        /*if(AI->dir == 'r') {AI->xBis++;}
+        else if(AI->dir == 'b') {AI->yBis++;}
+        else if(AI->dir == 'l') {AI->xBis--;}
+        else if(AI->dir == 't') {AI->yBis--;}*/
+    }
+    else if(AI->state == 2) {
+        if(hit && !AI->check) {
+            if(AI->dir == 'r'){
+                if(!isCorrectPos(AI->x+1 + AI->xBis, AI->y + AI->yBis, plat) || alreadyHitten(AI->x+1 + AI->xBis, AI->y + AI->yBis, ennemyPlat)) {AI->check = 1; AI->dir='l'; AI->xBis=0; AI->yBis=0;}
+            }
+            else if (AI->dir == 'l'){
+                if(!isCorrectPos(AI->x-1 + AI->xBis, AI->y + AI->yBis, plat) || alreadyHitten(AI->x-1 + AI->xBis, AI->y + AI->yBis, ennemyPlat)) {AI->check = 1; AI->dir='r'; AI->xBis=0; AI->yBis=0;}
+            }
+            else if (AI->dir == 't'){
+                if(!isCorrectPos(AI->x + AI->xBis, AI->y-1 + AI->yBis, plat) || alreadyHitten(AI->x + AI->xBis, AI->y-1 + AI->yBis, ennemyPlat)) {AI->check = 1; AI->dir='b'; AI->xBis=0; AI->yBis=0;}
+            }
+            else if (AI->dir == 'b'){
+                if(!isCorrectPos(AI->x + AI->xBis, AI->y+1 + AI->yBis, plat) || alreadyHitten(AI->x + AI->xBis, AI->y+1 + AI->yBis, ennemyPlat)) {AI->check = 1; AI->dir='t'; AI->xBis=0; AI->yBis=0;}
+            }
+        }
+        if(!hit && !AI->check) {
+            if(AI->dir == 'r'){
+                if(isCorrectPos(AI->x-1, AI->y, plat) && !alreadyHitten(AI->x-1, AI->y, ennemyPlat)) {AI->dir = 'l'; AI->check = 1;}
+                else {AI->state = 0;}
+            }
+            else if (AI->dir == 'l'){
+                if(isCorrectPos(AI->x+1, AI->y, plat) && !alreadyHitten(AI->x+1, AI->y, ennemyPlat)) {AI->dir = 'r'; AI->check = 1;}
+                else {AI->state = 0;}
+            }
+            else if (AI->dir == 't'){
+                if(isCorrectPos(AI->x, AI->y+1, plat) && !alreadyHitten(AI->x, AI->y+1, ennemyPlat)) {AI->dir = 'b'; AI->check = 1;}
+                else {AI->state = 0;}
+            }
+            else if (AI->dir == 'b'){
+                if(isCorrectPos(AI->x, AI->y-1, plat) && !alreadyHitten(AI->x, AI->y-1, ennemyPlat)) {AI->dir = 't'; AI->check = 1;}
+                else {AI->state = 0;}
+            }
+            AI->xBis = 0;
+            AI->yBis = 0;
+        }
+        else if(hit && AI->check) {
+            if(AI->dir == 'r'){
+                if(!isCorrectPos(AI->x+1 + AI->xBis, AI->y + AI->yBis, plat) || alreadyHitten(AI->x+1 + AI->xBis, AI->y + AI->yBis, ennemyPlat)) {AI->state = 0;}
+            }
+            else if (AI->dir == 'l'){
+                if(!isCorrectPos(AI->x-1 + AI->xBis, AI->y + AI->yBis, plat) || alreadyHitten(AI->x-1 + AI->xBis, AI->y + AI->yBis, ennemyPlat)) {AI->state = 0;}
+            }
+            else if (AI->dir == 't'){
+                if(!isCorrectPos(AI->x + AI->xBis, AI->y-1 + AI->yBis, plat) || alreadyHitten(AI->x + AI->xBis, AI->y-1 + AI->yBis, ennemyPlat)) {AI->state = 0;}
+            }
+            else if (AI->dir == 'b'){
+                if(!isCorrectPos(AI->x + AI->xBis, AI->y+1 + AI->yBis, plat) || alreadyHitten(AI->x + AI->xBis, AI->y+1 + AI->yBis, ennemyPlat)) {AI->state = 0;}
+            }
+            AI->xBis = 0;
+            AI->yBis = 0;
+        }
+        else if(!hit && AI->check) {
+            AI->state = 0;
+            AI->dir = 'r';
+            AI->check = 0;
+            AI->xBis = 0;
+            AI->yBis = 0;
+        }
+    }
+    if(AI->state != 0){
+        if(AI->dir == 'r') {AI->xBis++;}
+        else if(AI->dir == 'b') {AI->yBis++;}
+        else if(AI->dir == 'l') {AI->xBis--;}
+        else if(AI->dir == 't') {AI->yBis--;}
     }
 }

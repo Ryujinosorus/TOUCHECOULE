@@ -4,7 +4,7 @@
 #include "Plateau.h"
 
 int main(){
-    system("clear");
+    //system("clear");
     
     Game* game=initGame();
     run(game);

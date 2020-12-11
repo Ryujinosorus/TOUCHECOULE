@@ -66,6 +66,7 @@ void run(Game* game){
             printPlat(game->allPlat[1],1);
             game->whereToAttack1(game->allPlat[0],game->allPlat[1]);
             printPlat(game->allPlat[1],1);
+            printf("isCorrectPos k2 : %d\n", isCorrectPos('k', 2, game->allPlat[1]));
             printf("Resultat de l'attaque\n");
             printf("Appuyez sur entree pour continuer: ");
             while(getchar() != '\n');
