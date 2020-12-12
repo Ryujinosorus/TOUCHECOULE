@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Plateau.h"
 #include "User.h"
+#include "IA.h"
 #include "Game.h"
 #define clear system("clear");
 Game* initGame(){

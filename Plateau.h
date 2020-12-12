@@ -29,5 +29,6 @@ int isCorrectPos(char c,int l,Plateau* plat);
 void addBoatToPlat(Plateau*);
 void setCharAt(char ,int ,Plateau* ,char );
 char getCharAt(char c,int l,Plateau* plat); 
+int alreadyHitten(char c, int l, Plateau* plat);
 Plateau* generateBoat(Plateau*);
 #endif
