@@ -6,8 +6,8 @@
 
 
 typedef struct Game{
-    void (*whereToAttack1)(Plateau*,Plateau*);
-    void (*whereToAttack2)(Plateau*,Plateau*);
+    int (*whereToAttack1)(Plateau*,Plateau*);
+    int (*whereToAttack2)(Plateau*,Plateau*);
     Plateau** allPlat;
 }Game;
 

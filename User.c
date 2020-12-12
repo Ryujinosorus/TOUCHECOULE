@@ -65,6 +65,7 @@ Coordonee** shootFullRow(Coordonee* centralPos,Plateau* ennemyPlat){
         res[ennemyPlat->nb_colonne]=NULL;
         for(int i=0;i<ennemyPlat->nb_colonne;i++)
             res[i] = initCoordonee('a'+i, centralPos->l);
+        free(centralPos);
         return res;
 }
 Coordonee** shootFullCol(Coordonee* centralPos,Plateau* ennemyPlat){
@@ -72,6 +73,7 @@ Coordonee** shootFullCol(Coordonee* centralPos,Plateau* ennemyPlat){
         res[ennemyPlat->nb_ligne]=NULL;
         for(int i=0;i<ennemyPlat->nb_ligne;i++)
             res[i] = initCoordonee(centralPos->c, 1+i);
+        free(centralPos);
         return res;
 }
 
@@ -170,8 +172,10 @@ int shoot(Coordonee** allPos,Plateau* plat,Plateau* ennemyPlat){
             setCharAt(attackPos->c, attackPos->l ,ennemyPlat, '#');
         }
         else if(c==' ')  setCharAt(attackPos->c, attackPos->l ,ennemyPlat, 'X');
+        free(allPos[i]);
         i++;
     }
+    free(allPos);
     if(i==1 && haveHit)
         plat->canSpecialShoot=1;
     else plat->canSpecialShoot=0;
@@ -185,16 +189,15 @@ int didHeLoose(Plateau* ennemyPlat){
             return 0;
     return 1;
 }
-void shootAsUser(Plateau* plat,Plateau* ennemyPlat){
+int shootAsUser(Plateau* plat,Plateau* ennemyPlat){
     //RECUPER LA POSITION CENTRALE
     printf("Attaque de : %s -> %s\nOu voulez-vous attaquer ?\n>",plat->owner,ennemyPlat->owner);
-    Coordonee* attackPos =NULL;
-    do{
-        if(attackPos!=NULL)
-            printf("Coordonnée incorrecte\n");
+    Coordonee* attackPos =askForCoordonnePrompt();
+    while(!isCorrectPos(attackPos->c,attackPos->l,ennemyPlat)){
+        printf("Coordonnée incorrecte\n");
+        free(attackPos);
         attackPos = askForCoordonnePrompt();
     }
-    while(!isCorrectPos(attackPos->c,attackPos->l,ennemyPlat));
 
 
     //RECUPERE LE OU LES TIRS
@@ -202,6 +205,7 @@ void shootAsUser(Plateau* plat,Plateau* ennemyPlat){
     if(didHeLoose(ennemyPlat)){
         printPlat(ennemyPlat,0);
         printf("%s a gagné ! \n",plat->owner);
-        exit(1);
+        return 0;
     }
+    return 1;
 }

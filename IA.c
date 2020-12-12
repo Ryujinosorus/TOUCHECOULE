@@ -27,7 +27,7 @@ void destroyIA() {
     free(AI);
 }
 
-void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
+int shootAsIA(Plateau* plat,Plateau* ennemyPlat){
     int justChanged = 0;
     if(!AI) {
         printf("L'IA n'a pas été correctement initialisé avec initIA().");
@@ -55,7 +55,7 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
     if(didHeLoose(ennemyPlat)){
         printPlat(ennemyPlat,0);
         printf("%s a gagné ! \n",plat->owner);
-        exit(1);
+        return 0;
     }
     // printf("Etat AI: %d\nAI Dir: %c, AI Check: %d\n", AI->state, AI->dir, AI->check);
     if(hit && AI->state == 0) {AI->state = 1; justChanged = 1;}
@@ -161,4 +161,5 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
         else if(AI->dir == 'l') {AI->xBis--;}
         else if(AI->dir == 't') {AI->yBis--;}
     }
+    return 1;
 }

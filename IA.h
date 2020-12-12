@@ -18,6 +18,6 @@ typedef struct IA{
 void initIA();
 void destroyIA();
 int isDefinedIA();
-void shootAsIA(Plateau*,Plateau*);
+int shootAsIA(Plateau*,Plateau*);
 
 #endif

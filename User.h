@@ -4,7 +4,7 @@
 #include "Plateau.h"
 #include "Tir.h"
 
-void shootAsUser(Plateau*,Plateau*);
+int shootAsUser(Plateau*,Plateau*);
 int shoot(Coordonee**,Plateau*,Plateau*);
 int didHeLoose(Plateau*);
 Coordonee** normalShoot(Coordonee*,Plateau*);

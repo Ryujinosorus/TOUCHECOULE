@@ -39,7 +39,6 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
     res->nb_colonne=nb_colonne;
     res->nb_ligne=nb_ligne;
     res->canSpecialShoot=0;
-    res->boatAlive=malloc(sizeof(Boat*)*5);
 
 
     res->tab=malloc(nb_ligne*sizeof(sizeof(char*)));
@@ -54,7 +53,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 }
 
 void printPlat(Plateau* plat,int mask){
-    system("clear");
+    //system("clear");
     printf("Plateau de %s : \n\n    ",plat->owner);
     for(int l=0;l<plat->nb_colonne;l++)
         printf("%c ",l+'a');
@@ -128,16 +127,17 @@ Boat** boatTab(){
     tab[4] = initBoat(5,"Porte-Avion");
     return tab;
 }
-void addBoatToPlat(Plateau* plat){
+Plateau* addBoatToPlat(Plateau* plat){
     //TAB OF SIZE
     Boat** tab=boatTab();
     plat->boatAlive=tab;
     for(int i=0;i<5;i++){
         Boat* curentBoat=tab[i];
         char dir;
-        Coordonee* pos;
+        Coordonee* pos=NULL;
         do{
-            system("clear");
+            if(pos)free(pos);
+            //system("clear");
             printPlat(plat,0);
             printf("Ou voulez-vous placer votre bateau de taille %d (%s)\n>",curentBoat->size,curentBoat->type);
             pos = askForCoordonnePrompt();
@@ -173,13 +173,14 @@ void addBoatToPlat(Plateau* plat){
                 printf("Ajout d'un X dans c: %c l:%d\n",pos->c+j,pos->l);
             }
         }
+        free(pos);
     }
 
     //FIN
     printPlat(plat,0);
     printf("Votre plateau final, appuyez sur entree pour continuer: ");
     while(getchar() != '\n');
-    return;
+    return plat;
 }
 
 Plateau* generateBoat(Plateau* plat){
@@ -187,14 +188,14 @@ Plateau* generateBoat(Plateau* plat){
     plat->boatAlive=tab;
     for(int i=0;i<5;i++){
         Boat* curentBoat = tab[i];
-        Coordonee* pos;
-        char dir;
-        do{
+        Coordonee* pos = getRandomPos(plat);
+        char dir = getRandomDir();
+        while(!checkIfItsCorrectBoatPlace(pos,dir,plat,curentBoat->size)){
+            free(pos);
             pos=getRandomPos(plat);
-            printf("C: %c L:%d\n",pos->c,pos->l);
             dir=getRandomDir();
         }
-        while(!checkIfItsCorrectBoatPlace(pos,dir,plat,curentBoat->size));
+
 
         curentBoat->dir=dir;
         curentBoat->c=pos->c;
@@ -224,8 +225,8 @@ Plateau* generateBoat(Plateau* plat){
                 printf("Ajout d'un X dans c: %c l:%d\n",pos->c+j,pos->l);
             }
         }
+    free(pos);
     }
-
     return plat;
 }
 

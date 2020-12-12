@@ -26,7 +26,7 @@ Plateau* initTab(int i,int j,char*);
 void printPlat(Plateau*,int);
 void delete_plateau(Plateau* plat);
 int isCorrectPos(char c,int l,Plateau* plat);
-void addBoatToPlat(Plateau*);
+Plateau* addBoatToPlat(Plateau*);
 void setCharAt(char ,int ,Plateau* ,char );
 char getCharAt(char c,int l,Plateau* plat); 
 int alreadyHitten(char c, int l, Plateau* plat);
