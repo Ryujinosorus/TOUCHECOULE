@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "Game.h"
 #include "Plateau.h"
 
 int main(){
     system("clear");
-    
+    srand( time( NULL ) );
     Game* game=initGame();
     run(game);
     //Plateau* a =initTab(15, 5, "Naim");

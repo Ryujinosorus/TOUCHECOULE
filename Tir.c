@@ -26,7 +26,6 @@ int checkIfItsCorrectCoordonne(Coordonee* pos,Plateau* plat){
 }
 
 Coordonee* getRandomPos(Plateau* plat){
-    srand( time( NULL ) );
     Coordonee* res;
     res=malloc(sizeof(Coordonee));
     res->c = 'a'+(rand()%plat->nb_colonne);
@@ -34,7 +33,6 @@ Coordonee* getRandomPos(Plateau* plat){
     return res;
 }
 char getRandomDir(){
-    srand( time( NULL ) );
     int a=rand()%4;
     if(a==0)
         return 'h';

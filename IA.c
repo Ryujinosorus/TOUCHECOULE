@@ -52,6 +52,11 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
     Coordonee* attackPos = initCoordonee(AI->x + AI->xBis,AI->y + AI->yBis);
     // printf("IA Shoot -> %c%d %c+%d %d+%d\n", AI->x + AI->xBis, AI->y + AI->yBis, AI->x, AI->xBis, AI->y, AI->yBis);
     int hit = shoot(normalShoot(attackPos, ennemyPlat), plat, ennemyPlat);
+    if(didHeLoose(ennemyPlat)){
+        printPlat(ennemyPlat,0);
+        printf("%s a gagné ! \n",plat->owner);
+        exit(1);
+    }
     // printf("Etat AI: %d\nAI Dir: %c, AI Check: %d\n", AI->state, AI->dir, AI->check);
     if(hit && AI->state == 0) {AI->state = 1; justChanged = 1;}
     if(AI->state == 1) {
@@ -91,7 +96,7 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
             else if(isCorrectPos(AI->x, AI->y-1, plat) && !alreadyHitten(AI->x, AI->y-1, ennemyPlat)) {AI->dir = 't';}
         }
     }
-    else if(AI->state == 2) {
+    if(AI->state == 2) {
         if(hit && !AI->check) {
             if(AI->dir == 'r'){
                 if(!isCorrectPos(AI->x+1 + AI->xBis, AI->y + AI->yBis, plat) || alreadyHitten(AI->x+1 + AI->xBis, AI->y + AI->yBis, ennemyPlat)) {AI->check = 1; AI->dir='l'; AI->xBis=0; AI->yBis=0;}
