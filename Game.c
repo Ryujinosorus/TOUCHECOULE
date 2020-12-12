@@ -11,17 +11,20 @@ Game* initGame(){
     char* nom=malloc(sizeof(char)*10);
     printf("Quel est votre nom ? \n>");
     scanf("%s",nom);
+    getchar();
     //clear
     int nbC;
     int nbL;
     do{
     printf("Combien de lignes voulez vous ? (min:10)\n>");
     scanf("%d",&nbL);
+    getchar();
     }while(nbL<10);
     //clear
     do{
         printf("Combien de colonnes voulez vous ? (min:10)\n>");
         scanf("%d",&nbC);
+        getchar();
     }while(nbC<10);
     //clear
 
@@ -31,7 +34,7 @@ Game* initGame(){
         printf("Contre qui voulez vous jouer ?\n1=IA\n2=Local\n>");
         scanf("%d",&a);
         //clear
-        fgetc(stdin);
+        getchar();
     }
     while(a<=0 || a >=3);
 
@@ -41,6 +44,7 @@ Game* initGame(){
     do{
         printf("Comment voulez-vous placer vos bateaux (%s)?\n1=Manuellement\n2=Aléatoirement\n",nom);
         scanf("%d",&b);
+        getchar();
     }
     while(b<=0 || b>=3);
     res->allPlat[0]=initTab(nbC,nbL, nom);
