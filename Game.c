@@ -6,7 +6,7 @@
 #include "Game.h"
 #define clear system("clear");
 Game* initGame(){
-    //INITIALISATION DES DONNES
+    //INITIALISATION DES DONNEES
     char* nom=malloc(sizeof(char)*10);
     char* nom2=malloc(sizeof(char)*10);
     printf("Quel est votre nom ? \n>");
@@ -21,7 +21,7 @@ Game* initGame(){
     scanf("%d",&nbC);
     clear
 
-    //ON RECUPER CONTRE QUI IL VEUT JOUER
+    //ON RECUPERE LE CHOIX DE L'UTILISATEUR (S'IL VEUT JOUER EN LOCAL OU CONTRE L'IA)
     int a;
     do{
         printf("Contre qui voulez vous jouer ?\n1=IA\n2=Local\n>");
@@ -33,7 +33,6 @@ Game* initGame(){
 
     Game* res= malloc(sizeof(Game));
     res->allPlat=malloc(sizeof(Plateau*)*2);
-    //res->allPlat[0]=initTab(nbC, nbL,nom);
     res->allPlat[0]=initTab(nbC,nbL, nom);
     generateBoat(res->allPlat[0]);
     //addBoatToPlat(res->allPlat[0]);
@@ -82,4 +81,5 @@ void run(Game* game){
         }
         round++;
     }
+    if(isDefinedIA()) destroyIA();
 }

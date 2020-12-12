@@ -7,6 +7,10 @@
 
 IA* AI;
 
+int isDefinedIA() {
+    return (AI != NULL);
+}
+
 void initIA() {
     AI = malloc(sizeof(IA));
     AI->state = 0;
@@ -46,9 +50,9 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
         }
     }
     Coordonee* attackPos = initCoordonee(AI->x + AI->xBis,AI->y + AI->yBis);
-    printf("IA Shoot -> %c%d %c+%d %d+%d\n", AI->x + AI->xBis, AI->y + AI->yBis, AI->x, AI->xBis, AI->y, AI->yBis);
+    // printf("IA Shoot -> %c%d %c+%d %d+%d\n", AI->x + AI->xBis, AI->y + AI->yBis, AI->x, AI->xBis, AI->y, AI->yBis);
     int hit = shoot(normalShoot(attackPos, ennemyPlat), plat, ennemyPlat);
-    printf("Etat AI: %d\nAI Dir: %c, AI Check: %d\n", AI->state, AI->dir, AI->check);
+    // printf("Etat AI: %d\nAI Dir: %c, AI Check: %d\n", AI->state, AI->dir, AI->check);
     if(hit && AI->state == 0) {AI->state = 1; justChanged = 1;}
     if(AI->state == 1) {
         if(!justChanged && hit) {
@@ -81,16 +85,11 @@ void shootAsIA(Plateau* plat,Plateau* ennemyPlat){
             AI->yBis = 0;
         }
         else if(justChanged) {
-            printf("Dans justChanged\n");
             if(isCorrectPos(AI->x+1, AI->y, plat) && !alreadyHitten(AI->x+1, AI->y, ennemyPlat)) {AI->dir = 'r';}
             else if(isCorrectPos(AI->x, AI->y+1, plat) && !alreadyHitten(AI->x, AI->y+1, ennemyPlat)) {AI->dir = 'b';}
             else if(isCorrectPos(AI->x-1, AI->y, plat) && !alreadyHitten(AI->x-1, AI->y, ennemyPlat)) {AI->dir = 'l';}
             else if(isCorrectPos(AI->x, AI->y-1, plat) && !alreadyHitten(AI->x, AI->y-1, ennemyPlat)) {AI->dir = 't';}
         }
-        /*if(AI->dir == 'r') {AI->xBis++;}
-        else if(AI->dir == 'b') {AI->yBis++;}
-        else if(AI->dir == 'l') {AI->xBis--;}
-        else if(AI->dir == 't') {AI->yBis--;}*/
     }
     else if(AI->state == 2) {
         if(hit && !AI->check) {

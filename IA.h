@@ -17,6 +17,7 @@ typedef struct IA{
 
 void initIA();
 void destroyIA();
+int isDefinedIA();
 void shootAsIA(Plateau*,Plateau*);
 
 #endif

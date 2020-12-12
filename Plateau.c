@@ -54,7 +54,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 }
 
 void printPlat(Plateau* plat,int mask){
-    //system("clear");
+    system("clear");
     printf("Plateau de %s : \n\n    ",plat->owner);
     for(int l=0;l<plat->nb_colonne;l++)
         printf("%c ",l+'a');
