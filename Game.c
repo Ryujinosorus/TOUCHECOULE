@@ -76,11 +76,14 @@ void run(Game* game){
             play = game->whereToAttack2(game->allPlat[1],game->allPlat[0]);
             printPlat(game->allPlat[0],1);
         }
-        printf("Resultat de l'attaque de %s \n",game->allPlat[round%2]->owner);
-        printf("Appuyez sur entree pour continuer: ");
-        while(getchar() != '\n');
+        if(play){
+            printf("Resultat de l'attaque de %s \n",game->allPlat[round%2]->owner);
+            printf("Appuyez sur entree pour continuer: ");
+            while(getchar() != '\n');
+        }
         round++;
     }
+    printf("Partie de %d rounds\n",round);
     if(isDefinedIA())
         destroyIA();
     else
