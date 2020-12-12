@@ -37,7 +37,14 @@ Game* initGame(){
 
     Game* res=malloc(sizeof(Game));
     res->allPlat=malloc(sizeof(Plateau*)*2);
-    res->allPlat[0]=addBoatToPlat(initTab(nbC,nbL, nom));
+    int b;
+    do{
+        printf("Comment voulez-vous placer vos bateaux (%s)?\n1=Manuellement\n2=Aléatoirement\n",nom);
+        scanf("%d",&b);
+    }
+    while(b<=0 || b>=3);
+    res->allPlat[0]=initTab(nbC,nbL, nom);
+    b == 1 ? addBoatToPlat(res->allPlat[0]) : generateBoat(res->allPlat[0]);
     //generateBoat(res->allPlat[0]);
     //addBoatToPlat(res->allPlat[0]);
     res->whereToAttack1=shootAsUser;
@@ -55,8 +62,13 @@ Game* initGame(){
         printf("Quel est votre nom ? (Joueur 2) \n>");
         scanf("%s",nom2);
         getchar();
+        do{
+            printf("Comment voulez-vous placer vos bateaux (%s)?\n1=Manuellement\n2=Aléatoirement\n",nom2);
+            scanf("%d",&b);
+        }
+        while(b<=0 || b>=3);
         res->allPlat[1]=initTab(nbC,nbL,nom2);
-        addBoatToPlat(res->allPlat[1]);
+        b == 1 ? addBoatToPlat(res->allPlat[1]) : generateBoat(res->allPlat[1]);
         res->whereToAttack2=shootAsUser;
     }
     return res;
