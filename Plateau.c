@@ -75,25 +75,40 @@ void printPlat(Plateau* plat,int mask){
 
 int checkIfItsCorrectBoatPlace(Coordonee* pos, char dir,Plateau* plat,int size){
     if(dir=='h'){
-        for(int j=0;j<size;j++)
-            if(!isCorrectPos(pos->c,pos->l-j,plat) || getCharAt(pos->c,pos->l-j,plat)=='O')
-                return 0;
+        for(int j=0;j<size;j++) {
+            if(!isCorrectPos(pos->c,pos->l-j,plat) || getCharAt(pos->c,pos->l-j,plat)=='O') return 0;
+            if(isCorrectPos(pos->c+1,pos->l-j,plat) && getCharAt(pos->c+1,pos->l-j,plat)=='O') return 0;
+            if(isCorrectPos(pos->c-1,pos->l-j,plat) && getCharAt(pos->c-1,pos->l-j,plat)=='O') return 0;
+        }
+        if(isCorrectPos(pos->c,pos->l+1,plat) && getCharAt(pos->c,pos->l+1,plat)=='O') return 0;
+        if(isCorrectPos(pos->c,pos->l-size,plat) && getCharAt(pos->c,pos->l-size,plat)=='O') return 0;
     }
     else if(dir=='b'){
-        for(int j=0;j<size;j++)
-            if(!isCorrectPos(pos->c,pos->l+j,plat) || getCharAt(pos->c,pos->l+j,plat)=='O')
-                return 0 ;
+        for(int j=0;j<size;j++) {
+            if(!isCorrectPos(pos->c,pos->l+j,plat) || getCharAt(pos->c,pos->l+j,plat)=='O') return 0;
+            if(isCorrectPos(pos->c+1,pos->l+j,plat) && getCharAt(pos->c+1,pos->l+j,plat)=='O') return 0;
+            if(isCorrectPos(pos->c-1,pos->l+j,plat) && getCharAt(pos->c-1,pos->l+j,plat)=='O') return 0;
+        }
+        if(isCorrectPos(pos->c,pos->l-1,plat) && getCharAt(pos->c,pos->l-1,plat)=='O') return 0;
+        if(isCorrectPos(pos->c,pos->l+size,plat) && getCharAt(pos->c,pos->l+size,plat)=='O') return 0;
     }
     else if(dir=='g'){
-        for(int j=0;j<size;j++)
-            if(!isCorrectPos(pos->c-j,pos->l,plat) || getCharAt(pos->c-j,pos->l,plat)=='O')
-                return 0;   
+        for(int j=0;j<size;j++) {
+            if(!isCorrectPos(pos->c-j,pos->l,plat) || getCharAt(pos->c-j,pos->l,plat)=='O') return 0;   
+            if(isCorrectPos(pos->c-j,pos->l+1,plat) && getCharAt(pos->c-j,pos->l+1,plat)=='O') return 0;
+            if(isCorrectPos(pos->c-j,pos->l-1,plat) && getCharAt(pos->c-j,pos->l-1,plat)=='O') return 0;
+        }
+        if(isCorrectPos(pos->c+1,pos->l,plat) && getCharAt(pos->c+1,pos->l,plat)=='O') return 0;
+        if(isCorrectPos(pos->c-size,pos->l,plat) && getCharAt(pos->c-size,pos->l,plat)=='O') return 0;
     }
     else if(dir=='d'){
-        for(int j=0;j<size;j++)
-            if(!isCorrectPos(pos->c+j,pos->l,plat) || getCharAt(pos->c+j,pos->l,plat)=='O')
-                return 0;
-                
+        for(int j=0;j<size;j++) {
+            if(!isCorrectPos(pos->c+j,pos->l,plat) || getCharAt(pos->c+j,pos->l,plat)=='O') return 0;
+            if(isCorrectPos(pos->c+j,pos->l+1,plat) && getCharAt(pos->c+j,pos->l+1,plat)=='O') return 0;
+            if(isCorrectPos(pos->c+j,pos->l-1,plat) && getCharAt(pos->c+j,pos->l-1,plat)=='O') return 0;
+        }   
+        if(isCorrectPos(pos->c-1,pos->l,plat) && getCharAt(pos->c-1,pos->l,plat)=='O') return 0;
+        if(isCorrectPos(pos->c+size,pos->l,plat) && getCharAt(pos->c+size,pos->l,plat)=='O') return 0;
     }
     return 1;
 }

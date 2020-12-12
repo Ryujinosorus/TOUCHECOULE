@@ -34,8 +34,8 @@ Game* initGame(){
     Game* res= malloc(sizeof(Game));
     res->allPlat=malloc(sizeof(Plateau*)*2);
     res->allPlat[0]=initTab(nbC,nbL, nom);
-    generateBoat(res->allPlat[0]);
-    //addBoatToPlat(res->allPlat[0]);
+    //generateBoat(res->allPlat[0]);
+    addBoatToPlat(res->allPlat[0]);
     res->whereToAttack1=shootAsUser;
     
     if(a==1){
