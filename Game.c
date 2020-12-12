@@ -14,11 +14,15 @@ Game* initGame(){
     clear
     int nbC;
     int nbL;
-    printf("Combien de lignes voulez vous ?\n>");
+    do{
+    printf("Combien de lignes voulez vous ? (min:10)\n>");
     scanf("%d",&nbL);
+    }while(nbL<10);
     clear
-    printf("Combien de colonnes voulez vous ?\n>");
-    scanf("%d",&nbC);
+    do{
+        printf("Combien de colonnes voulez vous ? (min:10)\n>");
+        scanf("%d",&nbC);
+    }while(nbC<10);
     clear
 
     //ON RECUPERE LE CHOIX DE L'UTILISATEUR (S'IL VEUT JOUER EN LOCAL OU CONTRE L'IA)
