@@ -103,11 +103,11 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     
     printf("Quel tir voulez-vous effectuer ?\n");
     printf("1)Tir basique\n");
-    if(isAliveBoat(plat->boatAlive[1],plat))printf("2)Tir en ligne (sous-marin)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[1]->type);
-    if(isAliveBoat(plat->boatAlive[1],plat))printf("3)Tir en colonne (sous-marin)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[1]->type);
-    if(isAliveBoat(plat->boatAlive[3],plat))printf("4)Tir en croix (croiseur)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[3]->type);
-    if(isAliveBoat(plat->boatAlive[3],plat))printf("5)Tir en plus (croiseur)\n"); else printf("Votre %s est mort.\n",plat->boatAlive[3]->type);
-    if(isAliveBoat(plat->boatAlive[4],plat))printf("6)Tir en carré (porte avion) \n"); else printf("Votre %s est mort.\n",plat->boatAlive[4]->type);
+    if( !plat->boatAlive[1]->used && isAliveBoat(plat->boatAlive[1],plat))printf("2)Tir en ligne (sous-marin)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[1]->type);
+    if( !plat->boatAlive[1]->used && isAliveBoat(plat->boatAlive[1],plat))printf("3)Tir en colonne (sous-marin)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[1]->type);
+    if( !plat->boatAlive[3]->used && isAliveBoat(plat->boatAlive[3],plat))printf("4)Tir en croix (croiseur)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[3]->type);
+    if( !plat->boatAlive[3]->used && isAliveBoat(plat->boatAlive[3],plat))printf("5)Tir en plus (croiseur)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[3]->type);
+    if( !plat->boatAlive[4]->used && isAliveBoat(plat->boatAlive[4],plat))printf("6)Tir en carré (porte avion) \n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[4]->type);
     
     
     int typeOfShoot;
@@ -118,38 +118,42 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     if(typeOfShoot==1)
         (void)0;
     else if(typeOfShoot==2){
-        if(!isAliveBoat(plat->boatAlive[1],plat)){
+        if( !plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
             printf("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
+        plat->boatAlive[1]->used=1;
         f=shootFullRow;
     }
     else if(typeOfShoot==3){
-        if(!isAliveBoat(plat->boatAlive[1],plat)){
+        if(!plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
             printf("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
+        plat->boatAlive[1]->used=1;
         f=shootFullCol;
     }
     else if(typeOfShoot==4){
-        if(!isAliveBoat(plat->boatAlive[3],plat)){
+        if( plat->boatAlive[3]->used || !isAliveBoat(plat->boatAlive[3],plat)){
             printf("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
         f=shootX;
     }
     else if(typeOfShoot==5){
-        if(!isAliveBoat(plat->boatAlive[3],plat)){
+        if( plat->boatAlive[3]->used || !isAliveBoat(plat->boatAlive[3],plat)){
             printf("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
+        plat->boatAlive[3]->used=1;
         f=shootPlus;
     }
     else if(typeOfShoot==6){
-        if(!isAliveBoat(plat->boatAlive[4],plat)){
+        if( plat->boatAlive[4]->used || !isAliveBoat(plat->boatAlive[4],plat)){
             printf("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
+        plat->boatAlive[4]->used=1;
         f=shootSquare;
     }
     else{

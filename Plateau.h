@@ -9,6 +9,7 @@ typedef struct Boat{
     int l;
     char dir;
     int isAlive;
+    int used;
 }Boat;
 
 typedef struct Plateau{

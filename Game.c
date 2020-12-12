@@ -4,7 +4,9 @@
 #include "User.h"
 #include "IA.h"
 #include "Game.h"
+
 #define clear system("clear");
+
 Game* initGame(){
     clear
     //INITIALISATION DES DONNEES
