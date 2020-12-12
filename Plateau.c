@@ -55,17 +55,22 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 void printPlat(Plateau* plat,int mask){
     //system("clear");
     printf("Plateau de %s : \n\n    ",plat->owner);
+    printf(" |");
     for(int l=0;l<plat->nb_colonne;l++)
-        printf("%c ",l+'a');
+        printf(" %c |",l+'A');
     printf("\n");
+    printf("-----|");
+    for(int l=0;l<plat->nb_ligne;l++)
+        printf("----");
+    puts("");
     for(int l=0;l<plat->nb_ligne;l++){
-        printf("%.3d ",l+1);
+        printf("%.3d  |",l+1);
         for(int c=0;c<plat->nb_colonne;c++){
             //printf("Acces a la pos : %c%d\n",c+'a',l);
             char val= plat->tab[l][c];
             if(mask && val=='O')
-                printf("%c ",' ');
-            else printf("%c ",val);  
+                printf(" %c |",' ');
+            else printf(" %c |",val);  
         } 
         printf("\n");
     } 
