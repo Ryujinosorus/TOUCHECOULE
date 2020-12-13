@@ -15,4 +15,3 @@ int main(){
     srand( time( NULL ) );
     run(initGame());
 }
-¨
