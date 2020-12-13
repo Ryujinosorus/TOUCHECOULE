@@ -1,7 +1,7 @@
-all : BattailleNavale
+all : BatailleNavale
 
-BattailleNavale : Main.o Game.o IA.o User.o Tir.o Plateau.o
-	gcc -o BattailleNavale Main.o Game.o IA.o User.o Plateau.o Tir.o
+BatailleNavale : Main.o Game.o IA.o User.o Tir.o Plateau.o
+	gcc -o BatailleNavale Main.o Game.o IA.o User.o Plateau.o Tir.o
 
 Main.o : main.c Game.o IA.o User.o Tir.o Plateau.o
 	gcc -o Main.o -c main.c
@@ -23,13 +23,13 @@ Plateau.o : User.c Tir.h Plateau.h Plateau.c
 	gcc -o Plateau.o -c Plateau.c
 
 DEBUG : main.c
-	gcc -D DEBUG -o BattailleNavaleDEBUG *.c
+	gcc -D DEBUG -o BatailleNavaleDEBUG *.c
 
 clean :
 	rm -rf *.o
 
 mrproper : clean
-	rm -rf BattailleNavale
-zip : BattailleNavale
-	zip BattailleNavale.zip *
+	rm -rf BatailleNavale
+zip : BatailleNavale
+	zip BatailleNavale.zip *
 	make mrproper
