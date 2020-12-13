@@ -11,10 +11,10 @@ Game* initGame(){
     clear
     //INITIALISATION DES DONNEES
     char* nom=malloc(sizeof(char)*10);
-    printf("Quel est votre nom ? \n>");
+    printf("Quel est votre prenom ? \n>");
     scanf("%s",nom);
     getchar();
-    //clear
+    clear
     int nbC;
     int nbL;
     do{
@@ -22,20 +22,20 @@ Game* initGame(){
     scanf("%d",&nbL);
     getchar();
     }while(nbL<10);
-    //clear
+    clear
     do{
         printf("Combien de colonnes voulez vous ? (min:10)\n>");
         scanf("%d",&nbC);
         getchar();
     }while(nbC<10);
-    //clear
+    clear
 
     //ON RECUPERE LE CHOIX DE L'UTILISATEUR (S'IL VEUT JOUER EN LOCAL OU CONTRE L'IA)
     int a;
     do{
         printf("Contre qui voulez vous jouer ?\n1=IA\n2=Local\n>");
         scanf("%d",&a);
-        //clear
+        clear
         getchar();
     }
     while(a<=0 || a >=3);
@@ -50,13 +50,18 @@ Game* initGame(){
     }
     while(b<=0 || b>=3);
     res->allPlat[0]=initTab(nbC,nbL, nom);
-    b == 1 ? addBoatToPlat(res->allPlat[0]) : generateBoat(res->allPlat[0]);
-    //generateBoat(res->allPlat[0]);
-    //addBoatToPlat(res->allPlat[0]);
+
+    if(b==1)
+        addBoatToPlat(res->allPlat[0]);
+    else{
+        printPlat(generateBoat(res->allPlat[0]),0);
+        printf("Votre plateau final, appuyez sur entree pour continuer: ");
+        while(getchar() != '\n');
+    }
     res->whereToAttack1=shootAsUser;
     
     if(a==1){
-        //system("clear");
+        clear
         initIA();
         res->allPlat[1]=generateBoat(initTab(nbC,nbL, "IA"));
         printPlat(res->allPlat[1],0);
@@ -64,8 +69,8 @@ Game* initGame(){
     }
     else if(a==2){
         char* nom2=malloc(sizeof(char)*10);
-        //system("clear");
-        printf("Quel est votre nom ? (Joueur 2) \n>");
+        clear
+        printf("Quel est votre prenom ? (Joueur 2) \n>");
         scanf("%s",nom2);
         getchar();
         do{

@@ -118,16 +118,16 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     if(typeOfShoot==1)
         (void)0;
     else if(typeOfShoot==2){
-        if( !plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
-            printf("Vous ne pouvez pas utiliser ce tir");
+        if( plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
+            puts("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
         plat->boatAlive[1]->used=1;
         f=shootFullRow;
     }
     else if(typeOfShoot==3){
-        if(!plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
-            printf("Vous ne pouvez pas utiliser ce tir");
+        if(plat->boatAlive[1]->used || !isAliveBoat(plat->boatAlive[1],plat)){
+            puts("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
         plat->boatAlive[1]->used=1;
@@ -135,14 +135,15 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     }
     else if(typeOfShoot==4){
         if( plat->boatAlive[3]->used || !isAliveBoat(plat->boatAlive[3],plat)){
-            printf("Vous ne pouvez pas utiliser ce tir");
+            puts("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
+        plat->boatAlive[3]->used=1;
         f=shootX;
     }
     else if(typeOfShoot==5){
         if( plat->boatAlive[3]->used || !isAliveBoat(plat->boatAlive[3],plat)){
-            printf("Vous ne pouvez pas utiliser ce tir");
+            puts("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
         plat->boatAlive[3]->used=1;
@@ -150,14 +151,14 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     }
     else if(typeOfShoot==6){
         if( plat->boatAlive[4]->used || !isAliveBoat(plat->boatAlive[4],plat)){
-            printf("Vous ne pouvez pas utiliser ce tir");
+            puts("Vous ne pouvez pas utiliser ce tir");
             return getType(centralPos,plat,ennemyPlat);
         }
         plat->boatAlive[4]->used=1;
         f=shootSquare;
     }
     else{
-        printf("Erreur, saisie invalide\n");
+        puts("Erreur, saisie invalide");
         return getType(centralPos,plat,ennemyPlat);
     }
     return f(centralPos,ennemyPlat);
@@ -198,7 +199,7 @@ int shootAsUser(Plateau* plat,Plateau* ennemyPlat){
     printf("Attaque de : %s -> %s\nOu voulez-vous attaquer ?\n>",plat->owner,ennemyPlat->owner);
     Coordonee* attackPos =askForCoordonnePrompt();
     while(!isCorrectPos(attackPos->c,attackPos->l,ennemyPlat)){
-        printf("Coordonnée incorrecte\n");
+        puts("Coordonnée incorrecte");
         free(attackPos);
         attackPos = askForCoordonnePrompt();
     }

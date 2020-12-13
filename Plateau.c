@@ -53,7 +53,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 }
 
 void printPlat(Plateau* plat,int mask){
-    //system("clear");
+    system("clear");
     printf("Plateau de %s : \n\n    ",plat->owner);
     printf(" |");
     for(int l=0;l<plat->nb_colonne;l++)
@@ -121,6 +121,7 @@ Boat* initBoat(int i,char* nom){
     res->type=nom;
     res->size=i;
     res->isAlive=1;
+    res->used=0;
     return res;
 }
 Boat** boatTab(){
@@ -142,7 +143,7 @@ Plateau* addBoatToPlat(Plateau* plat){
         Coordonee* pos=NULL;
         do{
             if(pos)free(pos);
-            //system("clear");
+            system("clear");
             printPlat(plat,0);
             printf("Ou voulez-vous placer votre bateau de taille %d (%s)\n>",curentBoat->size,curentBoat->type);
             pos = askForCoordonnePrompt();
