@@ -107,7 +107,7 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
 
     Coordonee** (*f)(Coordonee*,Plateau*) = normalShoot;
 
-    if(!plat->canSpecialShoot)
+    if(!plat->canSpecialShoot || ( (plat->boatAlive[1]->used && !isAliveBoat(plat->boatAlive[1],plat)) && (plat->boatAlive[3]->used && !isAliveBoat(plat->boatAlive[3],plat)) && (plat->boatAlive[3]->used && !isAliveBoat(plat->boatAlive[3],plat)) ) )
         return f(centralPos,ennemyPlat);
     
     printf("Quel tir voulez-vous effectuer ?\n");
