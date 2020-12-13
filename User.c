@@ -116,7 +116,7 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     if( !plat->boatAlive[1]->used && isAliveBoat(plat->boatAlive[1],plat))printf("3)Tir en colonne (sous-marin)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[1]->type);
     if( !plat->boatAlive[3]->used && isAliveBoat(plat->boatAlive[3],plat))printf("4)Tir en croix (croiseur)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[3]->type);
     if( !plat->boatAlive[3]->used && isAliveBoat(plat->boatAlive[3],plat))printf("5)Tir en plus (croiseur)\n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[3]->type);
-    if( !plat->boatAlive[4]->used && isAliveBoat(plat->boatAlive[4],plat))printf("6)Tir en carré (porte avion) \n"); else printf("Votre %s est indisponible.\n",plat->boatAlive[4]->type);
+    if( !plat->boatAlive[4]->used && isAliveBoat(plat->boatAlive[4],plat))printf("6)Tir en carré (porte avion) \n>"); else printf("Votre %s est indisponible.\n",plat->boatAlive[4]->type);
     
     
     int typeOfShoot;
