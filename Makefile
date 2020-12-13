@@ -26,4 +26,8 @@ clean :
 	rm -rf *.o
 
 mrproper : clean
-	rm -rf prog
+	rm -rf BattailleNavale
+
+zip : BattailleNavale
+	zip BattailleNavale.zip *
+	make mrproper
