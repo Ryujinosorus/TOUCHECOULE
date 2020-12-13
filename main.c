@@ -4,6 +4,8 @@
 #include "Game.h"
 #include "Plateau.h"
 
+
+
 int main(){
     srand( time( NULL ) );
     run(initGame());

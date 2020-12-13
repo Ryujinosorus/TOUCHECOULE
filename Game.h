@@ -1,7 +1,6 @@
 #ifndef __GAME__H__
 #define __GAME__H__
 
-#define clear system("clear");
 #include "Plateau.h"
 
 

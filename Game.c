@@ -5,7 +5,11 @@
 #include "IA.h"
 #include "Game.h"
 
-#define clear system("clear");
+#ifndef DEBUG
+    #define clear system("clear");
+#else
+    #define clear (void)0;
+#endif
 
 Game* initGame(){
     clear

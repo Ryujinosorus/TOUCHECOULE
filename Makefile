@@ -22,12 +22,14 @@ Tir.o : Tir.c Tir.h Plateau.h
 Plateau.o : User.c Tir.h Plateau.h Plateau.c
 	gcc -o Plateau.o -c Plateau.c
 
+DEBUG : main.c
+	gcc -D DEBUG -o BattailleNavaleDEBUG *.c
+
 clean :
 	rm -rf *.o
 
 mrproper : clean
 	rm -rf BattailleNavale
-
 zip : BattailleNavale
 	zip BattailleNavale.zip *
 	make mrproper

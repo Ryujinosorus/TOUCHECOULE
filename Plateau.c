@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifndef DEBUG
+    #define clear system("clear");
+#else
+    #define clear (void)0;
+#endif
 
 char getCharAt(char c,int l,Plateau* plat){
     if(l<=0 || l>plat->nb_ligne || c-'a'>=plat->nb_colonne){
@@ -53,7 +58,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
 }
 
 void printPlat(Plateau* plat,int mask){
-    system("clear");
+    clear
     printf("Plateau de %s : \n\n    ",plat->owner);
     printf(" |");
     for(int l=0;l<plat->nb_colonne;l++)
@@ -143,7 +148,7 @@ Plateau* addBoatToPlat(Plateau* plat){
         Coordonee* pos=NULL;
         do{
             if(pos)free(pos);
-            system("clear");
+            clear
             printPlat(plat,0);
             printf("Ou voulez-vous placer votre bateau de taille %d (%s)\n>",curentBoat->size,curentBoat->type);
             pos = askForCoordonnePrompt();
