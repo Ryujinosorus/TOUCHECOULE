@@ -4,12 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef linux
 #ifndef DEBUG
     #define clear system("clear");
 #else
     #define clear (void)0;
 #endif
+#else
+    #define clear (void)0;
+#endif
 
+// Fonction prenant en paramètre des coordonnées et un plateau et renvoyant le caractère de la case (# ou X ou O ou rien)
 char getCharAt(char c,int l,Plateau* plat){
     if(l<=0 || l>plat->nb_ligne || c-'a'>=plat->nb_colonne){
         fprintf(stderr,"Accès à la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
@@ -18,16 +23,19 @@ char getCharAt(char c,int l,Plateau* plat){
     return plat->tab[l-1][c-'a'];
 }
 
+// Fonction prenant en paramètre des coordonnées et un plateau et renvoyant 1 si la case a déjà été la cible d'un tir
 int alreadyHitten(char c, int l, Plateau* plat){
     char tmp = getCharAt(c, l, plat);
     if(tmp == '#' || tmp == 'X') return 1;
     return 0;
 }
 
+// Fonction prenant en paramètre des coordonnées et un plateau et renvoyant 1 si la position est correcte
 int isCorrectPos(char c,int l,Plateau* plat){
     return !(l<=0 || l>plat->nb_ligne || c-'a'>=plat->nb_colonne || c-'a'<0);
 }
 
+// Fonction prenant en paramètre des coordonnées, un plateau et un caractère et le définissant à la case correspondante
 void setCharAt(char c,int l,Plateau* plat,char val){
    if(l>plat->nb_ligne || c-'a'>=plat->nb_colonne){
         fprintf(stderr,"Accès a la position %d %c du tableau de %s invalide\n",l,c,plat->owner);
@@ -36,7 +44,7 @@ void setCharAt(char c,int l,Plateau* plat,char val){
     plat->tab[l-1][c-'a']=val;
 }
 
-
+// Fonction permettant de creer le tableau avec le nombre de colonnes et de lignes adéquates et l'attribuant a un user.
 Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
     Plateau* res;
     
@@ -57,6 +65,7 @@ Plateau* initTab(int nb_colonne,int nb_ligne,char* owner){
     return res;
 }
 
+// Fonction permettant d'afficher le tableau d'une manière lisible par l'homme.
 void printPlat(Plateau* plat,int mask){
     clear
     printf("Plateau de %s : \n\n    ",plat->owner);
@@ -81,8 +90,9 @@ void printPlat(Plateau* plat,int mask){
     } 
 }
 
-
+// Prend en paramètre un plateau, une coordonnée, une direction et la taille du tableau puis renvoie si le bateau peut s'y positionner ou pas
 int checkIfItsCorrectBoatPlace(Coordonee* pos, char dir,Plateau* plat,int size){
+    // On check si le bateau ne dépasse pas du tableau et qu'il n'y a aucun autre bateau a coté.
     if(dir=='h'){
         for(int j=0;j<size;j++) {
             if(!isCorrectPos(pos->c,pos->l-j,plat) || getCharAt(pos->c,pos->l-j,plat)=='O') return 0;
@@ -121,6 +131,8 @@ int checkIfItsCorrectBoatPlace(Coordonee* pos, char dir,Plateau* plat,int size){
     }
     return 1;
 }
+
+// Permet de creer un élément de type Boat avec un nom et une taille.
 Boat* initBoat(int i,char* nom){
     Boat* res=malloc(sizeof(Boat));
     res->type=nom;
@@ -129,6 +141,8 @@ Boat* initBoat(int i,char* nom){
     res->used=0;
     return res;
 }
+
+// Initialise le tableau contenant tout les bateaux du jeu.
 Boat** boatTab(){
     Boat** tab = malloc(sizeof(Boat*)*5);
     tab[0] = initBoat(2,"Torpilleur");
@@ -138,11 +152,14 @@ Boat** boatTab(){
     tab[4] = initBoat(5,"Porte-Avion");
     return tab;
 }
+
+// Permet d'ajouter un bateau au plateau
 Plateau* addBoatToPlat(Plateau* plat){
     //TAB OF SIZE
     Boat** tab=boatTab();
     plat->boatAlive=tab;
     for(int i=0;i<5;i++){
+        // Pour chaque bateau dans le jeu (Actuellement 5 par joueur), on demande la position et vérifie qu'elle soit valide.
         Boat* curentBoat=tab[i];
         char dir;
         Coordonee* pos=NULL;
@@ -194,6 +211,7 @@ Plateau* addBoatToPlat(Plateau* plat){
     return plat;
 }
 
+// Fonction renvoyant un Plateau dont les bateaux ont été posé aléatoirement
 Plateau* generateBoat(Plateau* plat){
     Boat** tab=boatTab();
     plat->boatAlive=tab;

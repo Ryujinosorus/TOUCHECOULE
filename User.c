@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Fonction qui déclare un tir normal à partir d'une coordonnée et d'un plateau
 Coordonee** normalShoot(Coordonee* centralPos,Plateau* ennemyPlat){    
     Coordonee** res = malloc(2*sizeof(Coordonee*));
     res[0]=centralPos;
@@ -11,6 +12,7 @@ Coordonee** normalShoot(Coordonee* centralPos,Plateau* ennemyPlat){
     return res;
 }
 
+// Fonction qui déclare un tir en forme de + (tir spécial) à partir d'une coordonnée et d'un plateau
 Coordonee** shootPlus(Coordonee* centralPos,Plateau* ennemyPlat){
         Coordonee** res = malloc((6)*sizeof(Coordonee*));
         res[0]=centralPos;
@@ -26,6 +28,7 @@ Coordonee** shootPlus(Coordonee* centralPos,Plateau* ennemyPlat){
         return res;
 }
 
+// Fonction qui déclare un tir en forme de X (tir spécial) à partir d'une coordonnée et d'un plateau
 Coordonee** shootX(Coordonee* centralPos,Plateau* ennemyPlat){
         Coordonee** res = malloc((6)*sizeof(Coordonee*));
         res[0]=centralPos;
@@ -41,6 +44,7 @@ Coordonee** shootX(Coordonee* centralPos,Plateau* ennemyPlat){
         return res;
 }
 
+// Fonction qui déclare un tir en forme de carré (tir spécial) à partir d'une coordonnée et d'un plateau
 Coordonee** shootSquare(Coordonee* centralPos,Plateau* ennemyPlat){
         Coordonee** res = malloc((10)*sizeof(Coordonee*));
         res[0]=centralPos;
@@ -60,6 +64,7 @@ Coordonee** shootSquare(Coordonee* centralPos,Plateau* ennemyPlat){
         return res;
 }
 
+// Fonction qui déclare un tir en ligne (tir spécial) à partir d'une coordonnée et d'un plateau
 Coordonee** shootFullRow(Coordonee* centralPos,Plateau* ennemyPlat){
         Coordonee** res = malloc((ennemyPlat->nb_colonne+1) * sizeof(Coordonee*));
         res[ennemyPlat->nb_colonne]=NULL;
@@ -68,6 +73,7 @@ Coordonee** shootFullRow(Coordonee* centralPos,Plateau* ennemyPlat){
         free(centralPos);
         return res;
 }
+// Fonction qui déclare un tir en colonne (tir spécial) à partir d'une coordonnée et d'un plateau
 Coordonee** shootFullCol(Coordonee* centralPos,Plateau* ennemyPlat){
         Coordonee** res = malloc((ennemyPlat->nb_ligne+1) * sizeof(Coordonee*));
         res[ennemyPlat->nb_ligne]=NULL;
@@ -77,6 +83,7 @@ Coordonee** shootFullCol(Coordonee* centralPos,Plateau* ennemyPlat){
         return res;
 }
 
+// Fonction retournant 1 si le bateau passé en paramètre ne s'est pas fait détruire
 int isAliveBoat(Boat* boat,Plateau* plat){
     if(!boat->isAlive)
         return 0;
@@ -94,6 +101,8 @@ int isAliveBoat(Boat* boat,Plateau* plat){
     boat->isAlive=0;
     return 0;
 }
+
+// Fonction demandant à l'utilisateur de choisir un tir spécial parmi ceux disponibles
 Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
 
     Coordonee** (*f)(Coordonee*,Plateau*) = normalShoot;
@@ -115,6 +124,7 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     getchar();
 
 
+    // Pour chaque tir, on vérifie si le bateau correspondant est encore vivant et s'il n'a pas déjà été utilisé
     if(typeOfShoot==1)
         (void)0;
     else if(typeOfShoot==2){
@@ -164,7 +174,7 @@ Coordonee** getType(Coordonee* centralPos,Plateau* plat,Plateau* ennemyPlat){
     return f(centralPos,ennemyPlat);
 }
 
-
+// Permet d'effectuer le tir en récupérant le tableau de coordonnée issue des fonctions de tir précédents
 int shoot(Coordonee** allPos,Plateau* plat,Plateau* ennemyPlat){
     Coordonee* attackPos;
     int i=0;
@@ -186,7 +196,7 @@ int shoot(Coordonee** allPos,Plateau* plat,Plateau* ennemyPlat){
     else plat->canSpecialShoot=0;
     return haveHit;
 }
-
+// Fonction qui verifie que l'user a encore au moins un bateau en vie
 int didHeLoose(Plateau* ennemyPlat){
 
     for(int i=0;i<5;i++)
@@ -194,6 +204,8 @@ int didHeLoose(Plateau* ennemyPlat){
             return 0;
     return 1;
 }
+
+// Fonction qui demande la coordonnée du tir à l'utilisateur chaque round et tire en fonction
 int shootAsUser(Plateau* plat,Plateau* ennemyPlat){
     //RECUPER LA POSITION CENTRALE
     printf("Attaque de : %s -> %s\nOu voulez-vous attaquer ?\n>",plat->owner,ennemyPlat->owner);

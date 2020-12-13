@@ -4,9 +4,9 @@
 #include "Plateau.h"
 #include "stdio.h"
 #include <time.h>
+#include <ctype.h>
 
-
-
+// Permet de creer un élément "Coordonée" à partir d'une position x et une position y
 Coordonee* initCoordonee(char a,int b){
     Coordonee* res=malloc(sizeof(Coordonee));
     res->c=a;
@@ -14,17 +14,19 @@ Coordonee* initCoordonee(char a,int b){
     return res;
 }
 
+// Fonction demandant à l'utilisateur de rentrer une coorodnnée pour un tir.
 Coordonee* askForCoordonnePrompt(){
     char a;
     int pos;
     scanf("%c%d",&a,&pos);
     getchar();
-    return initCoordonee(a,pos);
+    return initCoordonee(tolower(a),pos);
 }
 int checkIfItsCorrectCoordonne(Coordonee* pos,Plateau* plat){
     return  pos->c<plat->nb_colonne -'a' && pos->l <plat->nb_ligne;
 }
 
+// Permet d'obtenir une coordonnée aléatoire du tableau
 Coordonee* getRandomPos(Plateau* plat){
     Coordonee* res;
     res=malloc(sizeof(Coordonee));
@@ -32,6 +34,8 @@ Coordonee* getRandomPos(Plateau* plat){
     res->l= rand()%plat->nb_ligne;
     return res;
 }
+
+// Permet d'obtenir une direction aléatoire pour le placement des bateaux
 char getRandomDir(){
     int a=rand()%4;
     if(a==0)
