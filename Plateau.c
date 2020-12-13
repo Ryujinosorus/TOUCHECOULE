@@ -74,7 +74,7 @@ void printPlat(Plateau* plat,int mask){
         printf(" %c |",l+'A');
     printf("\n");
     printf("-----|");
-    for(int l=0;l<plat->nb_ligne;l++)
+    for(int l=0;l<plat->nb_colonne;l++)
         printf("----");
     puts("");
     for(int l=0;l<plat->nb_ligne;l++){
@@ -86,6 +86,9 @@ void printPlat(Plateau* plat,int mask){
                 printf(" %c |",' ');
             else printf(" %c |",val);  
         } 
+        printf("\n     |");
+        for(int l=0;l<plat->nb_colonne;l++)
+            printf("---+");
         printf("\n");
     } 
 }
